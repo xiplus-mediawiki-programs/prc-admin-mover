@@ -81,11 +81,11 @@ class PrcAdminMover:
             ))
         with open('changes.csv', 'w', encoding='utf8') as f:
             for change in changes:
-                logging.info('Move %s to %s', change[0], change[1])
+                self.logger.info('Move %s to %s', change[0], change[1])
                 f.write('%s,%s\n' % change)
 
         summary = self.cfg['summary'].format(area=self.args.area, requester=self.args.requester)
-        logging.info('Summary: %s', summary)
+        self.logger.info('Summary: %s', summary)
         toMove = True
         if not args.no_confirm:
             pywikibot.input_yn('Move these {} pages?'.format(len(changes)), 'N')
