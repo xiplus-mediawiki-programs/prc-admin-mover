@@ -96,7 +96,11 @@ class PrcAdminMover:
                 new_title = 'Template:{}'.format(change[1])
                 page = pywikibot.Page(self.site, old_title)
                 self.logger.info('(%s/%s) Moving %s to %s', idx, len(changes), old_title, new_title)
-                page.move(new_title, reason=summary, movetalk=True, noredirect=True, movesubpages=False)
+                try:
+                    page.move(new_title, reason=summary, movetalk=True, noredirect=True, movesubpages=False)
+                except Exception as e:
+                    self.logger.error('Failed to move %s to %s', old_title, new_title)
+                    self.logger.error(e)
         else:
             self.logger.info('Skip')
 
