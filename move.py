@@ -89,10 +89,11 @@ class PrcAdminMover:
         toMove = pywikibot.input_yn('Move these {} pages?'.format(len(changes)), 'N')
         if toMove:
             self.logger.info('Moving...')
-            for change in changes:
+            for idx, change in enumerate(changes, 1):
                 old_title = 'Template:{}'.format(change[0])
                 new_title = 'Template:{}'.format(change[1])
                 page = pywikibot.Page(self.site, old_title)
+                self.logger.info('(%s/%s) Moving %s to %s', idx, len(changes), old_title, new_title)
                 page.move(new_title, reason=summary, movetalk=True, noredirect=True, movesubpages=False)
         else:
             self.logger.info('Skip')
