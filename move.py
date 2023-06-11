@@ -81,12 +81,14 @@ class PrcAdminMover:
             ))
         with open('changes.csv', 'w', encoding='utf8') as f:
             for change in changes:
-                print('Move {} to {}'.format(change[0], change[1]))
+                logging.info('Move %s to %s', change[0], change[1])
                 f.write('%s,%s\n' % change)
 
         summary = self.cfg['summary'].format(area=self.args.area, requester=self.args.requester)
-        print('Summary: {}'.format(summary))
-        toMove = pywikibot.input_yn('Move these {} pages?'.format(len(changes)), 'N')
+        logging.info('Summary: %s', summary)
+        toMove = True
+        if not args.no_confirm:
+            pywikibot.input_yn('Move these {} pages?'.format(len(changes)), 'N')
         if toMove:
             self.logger.info('Moving...')
             for idx, change in enumerate(changes, 1):
@@ -107,6 +109,7 @@ if __name__ == '__main__':
     parser.add_argument('destination')
     parser.add_argument('--area', help='行政區劃', required=True)
     parser.add_argument('--requester', help='申請人', required=True)
+    parser.add_argument('--no-confirm', action='store_true', default=False)
     parser.add_argument('-d', '--debug', action='store_const', dest='loglevel', const=logging.DEBUG, default=logging.INFO)
     args = parser.parse_args()
 
